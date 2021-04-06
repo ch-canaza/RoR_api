@@ -34,5 +34,27 @@ RSpec.describe ArticlesController do
         eq([recent_article.id, older_article.id])
       )
     end
+
+    it 'paginates results' do
+      article1, article2, article3 = create_list(:article, 3)
+      # receives page number and elementes per page
+      get '/articles', params: { page: { number: 2, size: 1 } }
+      # compares with the amount of elements per page
+      expect(json_data.length).to eq(1)
+      # the object returned is equal to the second object
+      expect(json_data.first[:id]).to eq([article2.id])
+    end
+
+    it 'contains pagination links in the response' do
+      article1, article2, article3 = create_list(:article, 3)
+      # receives page number and elementes per page
+      get '/articles', params: { page: { number: 2, size: 1 } }
+      # expects the json links section to have 5 elements
+      expect(json['links'].length).to eq(5)
+      # expect the content to include all the links especified in the doc.
+      expect(json_data['links'].keys).to contain_exactly(
+        'first', 'prev', 'next', 'last', 'self'
+      )
+    end
   end
 end
