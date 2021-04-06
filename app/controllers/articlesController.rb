@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   def index
-    articles = Article.all
+    articles = Article.recent # retorna los articulos en orden
     render json: serializer.new(articles), status: :ok
   end
 
