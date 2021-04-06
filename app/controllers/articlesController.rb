@@ -13,7 +13,13 @@ class ArticlesController < ApplicationController
     ArticleSerializer
   end
  
-  def show;end
+  def show
+  article = Article.find(params[:id])
+  render json: serializer.new(article)
+  # or use  gem jsonapiErrorsHandler
+  rescue ActiveRecord::RecordNotFound => e
+    render json: { message: e.message, detail: "here will be nicely formatted response" }
+  end
 
   def paginator
     JSOM::Pagination::Paginator.new
