@@ -42,7 +42,7 @@ RSpec.describe ArticlesController do
       # compares with the amount of elements per page
       expect(json_data.length).to eq(1)
       # the object returned is equal to the second object
-      expect(json_data.first[:id]).to eq([article2.id])
+      expect(json_data.first[:id]).to eq(article2.id.to_s)
     end
 
     it 'contains pagination links in the response' do
